@@ -1,0 +1,28 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s;
+    cout << "Enter a sentence: ";
+    getline(cin, s);
+
+    string word="",longestWord="";
+
+    for (int i = 0; i <= s.length(); i++) {
+       if (s[i] == ' ' || i == s.length())
+      {
+            if (word.length() > longestWord.length()) {
+                longestWord = word;
+            }
+            word="" ;
+        } else {
+            word += s[i];
+        }
+    }
+
+    cout << "Longest word: " << longestWord << endl;
+    cout << "Length: " << longestWord.length() << endl;
+
+    return 0;
+}
