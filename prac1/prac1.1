@@ -1,0 +1,46 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int n, h;
+
+    cout << "Enter no of item = ";
+    cin >> n;
+
+    int arr[n];
+
+    cout << "Enter the items: ";
+
+
+    for(int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    cout << "Enter number of hours: ";
+    cin >> h;
+
+    h = h % n;
+
+    for(int i = 0; i < h; i++)
+    {
+        int temp = arr[0];
+
+        for(int j = 0; j < n - 1; j++)
+        {
+            arr[j] = arr[j + 1];
+        }
+
+        arr[n - 1] = temp;
+    }
+
+    cout << "Final display order: ";
+
+    for(int i = 0; i < n; i++)
+    {
+        cout << arr[i] << " ";
+    }
+
+    return 0;
+}
