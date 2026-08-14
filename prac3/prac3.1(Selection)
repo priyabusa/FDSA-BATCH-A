@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int marks[] = {65, 32, 78, 45, 90, 21};
+    int n = 6;
+    for(int i = 1; i < n; i++)
+    {
+        int key = marks[i];
+        int j = i - 1;
+
+        while(j >= 0 && marks[j] > key)
+        {
+            marks[j + 1] = marks[j];
+            j--;
+        }
+
+        marks[j + 1] = key;
+    }
+
+    cout << "Sorted marks using Insertion Sort: ";
+
+    for(int i = 0; i < n; i++)
+    {
+        cout << marks[i] << " ";
+    }
+
+    return 0;
+}
