@@ -1,0 +1,156 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string song;
+    Node* prev;
+    Node* next;
+
+    Node(string s) {
+        song = s;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class Playlist {
+private:
+    Node* head;
+    Node* tail;
+
+public:
+    Playlist() {
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    void addBeginning(string song) {
+        Node* newNode = new Node(song);
+
+        if (head == nullptr) {
+            head = tail = newNode;
+        } else {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+    }
+
+    void addEnd(string song) {
+        Node* newNode = new Node(song);
+
+        if (tail == nullptr) {
+            head = tail = newNode;
+        } else {
+            newNode->prev = tail;
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    void insertAfter(string target, string song) {
+        Node* current = head;
+
+        while (current != nullptr && current->song != target) {
+            current = current->next;
+        }
+
+        if (current == nullptr) {
+            cout << "Song \"" << target << "\" not found!" << endl;
+            return;
+        }
+
+        Node* newNode = new Node(song);
+
+        newNode->prev = current;
+        newNode->next = current->next;
+
+        if (current->next != nullptr) {
+            current->next->prev = newNode;
+        } else {
+            tail = newNode;
+        }
+
+        current->next = newNode;
+    }
+
+    void removeFirst() {
+        if (head == nullptr) {
+            cout << "Playlist is empty!" << endl;
+            return;
+        }
+
+        Node* temp = head;
+
+        if (head == tail) {
+            head = tail = nullptr;
+        } else {
+            head = head->next;
+            head->prev = nullptr;
+        }
+
+        delete temp;
+    }
+
+    int countSongs() {
+        int count = 0;
+        Node* current = head;
+
+        while (current != nullptr) {
+            count++;
+            current = current->next;
+        }
+
+        return count;
+    }
+
+    void display() {
+        Node* current = head;
+
+        cout << "Playlist: ";
+
+        if (current == nullptr) {
+            cout << "Empty";
+        }
+
+        while (current != nullptr) {
+            cout << current->song;
+
+            if (current->next != nullptr)
+                cout << " -> ";
+
+            current = current->next;
+        }
+
+        cout << endl;
+    }
+};
+
+int main() {
+    Playlist p;
+
+    p.addBeginning("Song A");
+    p.display();
+
+    p.addEnd("Song B");
+    p.display();
+
+    p.addEnd("Song D");
+    p.display();
+
+    p.insertAfter("Song B", "Song C");
+    p.display();
+
+    cout << "Number of songs: " << p.countSongs() << endl;
+
+    p.removeFirst();
+    p.display();
+
+    cout << "Number of songs: " << p.countSongs() << endl;
+
+    p.insertAfter("Song X", "Song E");
+    p.display();
+
+    return 0;
+}
