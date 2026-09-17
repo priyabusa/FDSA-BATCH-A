@@ -1,0 +1,132 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class CircularList {
+private:
+    Node* head;
+
+public:
+    CircularList() {
+        head = nullptr;
+    }
+
+    void insert(int value, int position) {
+        Node* newNode = new Node(value);
+
+        if (head == nullptr) {
+            head = newNode;
+            newNode->next = head;
+            newNode->prev = head;
+            return;
+        }
+
+        if (position <= 1) {
+            Node* last = head->prev;
+
+            newNode->next = head;
+            newNode->prev = last;
+
+            last->next = newNode;
+            head->prev = newNode;
+
+            head = newNode;
+            return;
+        }
+
+        Node* current = head;
+
+        for (int i = 1; i < position - 1 && current->next != head; i++)
+            current = current->next;
+
+        newNode->next = current->next;
+        newNode->prev = current;
+
+        current->next->prev = newNode;
+        current->next = newNode;
+    }
+
+    void remove(int value) {
+        if (head == nullptr)
+            return;
+
+        Node* current = head;
+
+        do {
+            if (current->data == value)
+                break;
+
+            current = current->next;
+        } while (current != head);
+
+        if (current->data != value)
+            return;
+
+        if (current->next == current) {
+            delete current;
+            head = nullptr;
+            return;
+        }
+
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+
+        if (current == head)
+            head = current->next;
+
+        delete current;
+    }
+
+    void display() {
+        if (head == nullptr) {
+            cout << "Circle: Empty" << endl;
+            return;
+        }
+
+        Node* current = head;
+
+        cout << "Circle: ";
+
+        do {
+            cout << current->data << " ";
+            current = current->next;
+        } while (current != head);
+
+        cout << endl;
+    }
+};
+
+int main() {
+    CircularList c;
+
+    c.insert(1, 1);
+    c.display();
+
+    c.insert(2, 2);
+    c.display();
+
+    c.insert(3, 3);
+    c.display();
+
+    c.insert(4, 2);
+    c.display();
+
+    c.remove(3);
+    c.display();
+
+    c.remove(1);
+    c.display();
+
+    return 0;
+}
