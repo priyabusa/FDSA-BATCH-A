@@ -1,0 +1,41 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int q[100];
+    int size = 0;
+
+    q[size++] = 101;
+
+    cout << "After critical patient: ";
+    for (int i = 0; i < size; i++)
+        cout << q[i] << " ";
+    cout << endl;
+
+    q[size++] = 102;
+
+    cout << "After routine patient: ";
+    for (int i = 0; i < size; i++)
+        cout << q[i] << " ";
+    cout << endl;
+
+    int patient = 103;
+    int position = 1;
+
+    if (position >= 0 && position <= size) {
+        for (int i = size; i > position; i--)
+            q[i] = q[i - 1];
+
+        q[position] = patient;
+        size++;
+    } else {
+        cout << "Invalid position!" << endl;
+    }
+
+    cout << "After priority patient: ";
+    for (int i = 0; i < size; i++)
+        cout << q[i] << " ";
+    cout << endl;
+
+    return 0;
+}
