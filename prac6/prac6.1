@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+class Stack {
+private:
+    int* arr;
+    int capacity;
+    int top;
+
+public:
+    Stack(int n) {
+        capacity = n;
+        arr = new int[capacity];
+        top = -1;
+    }
+
+    void push(int value) {
+        if (top == capacity - 1) {
+            cout << "Error: Stack Overflow" << endl;
+            return;
+        }
+
+        top++;
+        arr[top] = value;
+
+        cout << "Top tray: " << arr[top] << endl;
+    }
+
+    void pop() {
+        if (top == -1) {
+            cout << "Error: Stack Underflow" << endl;
+            return;
+        }
+
+        top--;
+
+        if (top == -1)
+            cout << "Top tray: Empty" << endl;
+        else
+            cout << "Top tray: " << arr[top] << endl;
+    }
+
+    ~Stack() {
+        delete[] arr;
+    }
+};
+
+int main() {
+    int n;
+    cin >> n;
+
+    Stack s(n);
+
+    s.push(101);
+    s.push(102);
+    s.push(103);
+
+    s.pop();
+    s.pop();
+    s.pop();
+    s.pop();
+
+    return 0;
+}
