@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Node {
+    string page;
+    Node* next;
+
+    Node(string p) {
+        page = p;
+        next = nullptr;
+    }
+};
+
+class BrowserHistory {
+private:
+    Node* top;
+
+public:
+    BrowserHistory() {
+        top = nullptr;
+    }
+
+    void visit(string page) {
+        Node* newNode = new Node(page);
+        newNode->next = top;
+        top = newNode;
+
+        cout << "Current Page: " << top->page << endl;
+    }
+
+    void back() {
+        if (top == nullptr || top->next == nullptr) {
+            cout << "No previous page!" << endl;
+            cout << "Current Page: " << top->page << endl;
+            return;
+        }
+
+        Node* temp = top;
+        top = top->next;
+        delete temp;
+
+        cout << "Current Page: " << top->page << endl;
+    }
+};
+
+int main() {
+    BrowserHistory b;
+
+    b.visit("Google");
+    b.visit("YouTube");
+    b.visit("Wikipedia");
+
+    b.back();
+    b.back();
+    b.back();
+
+    return 0;
+}
