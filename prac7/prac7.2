@@ -1,0 +1,71 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int patient;
+    Node* next;
+};
+
+class Queue {
+    Node* front;
+    Node* rear;
+
+public:
+    Queue() {
+        front = rear = nullptr;
+    }
+
+    void arrive(int patient) {
+        Node* newNode = new Node();
+        newNode->patient = patient;
+        newNode->next = nullptr;
+
+        if (rear == nullptr) {
+            front = rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+
+        cout << "Front Patient: " << front->patient << endl;
+    }
+
+    void attend() {
+        if (front == nullptr) {
+            cout << "Ward is Empty - No patient to attend\n";
+            return;
+        }
+
+        cout << "Attended Patient: " << front->patient << endl;
+
+        Node* temp = front;
+        front = front->next;
+        delete temp;
+
+        if (front == nullptr)
+            rear = nullptr;
+
+        if (front != nullptr)
+            cout << "Front Patient: " << front->patient << endl;
+        else
+            cout << "Ward is Empty\n";
+    }
+};
+
+int main() {
+    Queue q;
+
+    q.arrive(101);
+    q.arrive(102);
+    q.arrive(103);
+
+    q.attend();
+    q.attend();
+
+    q.arrive(104);
+
+    q.attend();
+    q.attend();
+
+    return 0;
+}
