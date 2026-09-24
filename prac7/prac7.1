@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+class Queue {
+    int arr[5];
+    int front, rear, count;
+
+public:
+    Queue() {
+        front = 0;
+        rear = -1;
+        count = 0;
+    }
+
+    void join(int token) {
+        if (count == 5) {
+            cout << "Queue is Full - Cannot join\n";
+            return;
+        }
+
+        rear = (rear + 1) % 5;
+        arr[rear] = token;
+        count++;
+
+        cout << "Front Token: " << arr[front] << endl;
+    }
+
+    void serve() {
+        if (count == 0) {
+            cout << "Queue is Empty - Cannot serve\n";
+            return;
+        }
+
+        cout << "Served Token: " << arr[front] << endl;
+        front = (front + 1) % 5;
+        count--;
+
+        if (count > 0)
+            cout << "Front Token: " << arr[front] << endl;
+        else
+            cout << "Queue is Empty\n";
+    }
+};
+
+int main() {
+    Queue q;
+
+    q.join(101);
+    q.join(102);
+    q.join(103);
+
+    q.serve();
+    q.serve();
+
+    q.join(104);
+    q.join(105);
+    q.join(106);
+    q.join(107);
+
+    q.serve();
+
+    return 0;
+}
