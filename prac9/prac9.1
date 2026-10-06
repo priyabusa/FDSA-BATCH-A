@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 20
+
+int graph[MAX][MAX];
+int visited[MAX];
+int n;
+
+
+void DFS(int node)
+{
+    visited[node] = 1;
+    cout << node << " ";
+
+    for (int i = 0; i < n; i++)
+    {
+        if (graph[node][i] == 1 && visited[i] == 0)
+        {
+            DFS(i);
+        }
+    }
+}
+
+
+void BFS(int start)
+{
+    int queue[MAX];
+    int front = 0, rear = 0;
+
+    for (int i = 0; i < n; i++)
+        visited[i] = 0;
+
+    queue[rear++] = start;
+    visited[start] = 1;
+
+    while (front < rear)
+    {
+        int node = queue[front++];
+        cout << node << " ";
+
+        for (int i = 0; i < n; i++)
+        {
+            if (graph[node][i] == 1 && visited[i] == 0)
+            {
+                queue[rear++] = i;
+                visited[i] = 1;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int edges;
+    int u, v, start;
+
+    cout << "Enter number of buildings: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+    {
+        visited[i] = 0;
+
+        for (int j = 0; j < n; j++)
+        {
+            graph[i][j] = 0;
+        }
+    }
+
+    cout << "Enter number of roads: ";
+    cin >> edges;
+
+    cout << "Enter roads:\n";
+
+    for (int i = 0; i < edges; i++)
+    {
+        cin >> u >> v;
+
+        
+        graph[u][v] = 1;
+        graph[v][u] = 1;
+    }
+
+    cout << "Enter starting building: ";
+    cin >> start;
+
+
+    cout << "\nDFS Traversal: ";
+    for (int i = 0; i < n; i++)
+        visited[i] = 0;
+
+    DFS(start);
+
+    cout << "\nBFS Traversal: ";
+    BFS(start);
+
+    return 0;
+}
