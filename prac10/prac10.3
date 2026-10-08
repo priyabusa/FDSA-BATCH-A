@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 10
+
+int main()
+{
+    int table[SIZE];
+    int n, id;
+    int h1, h2, index;
+
+
+    for (int i = 0; i < SIZE; i++)
+        table[i] = -1;
+
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    cout << "Enter student IDs:\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> id;
+
+        h1 = id % SIZE;
+
+
+        h2 = 7 - (id % 7);
+
+        int j = 0;
+
+
+        while (j < SIZE)
+        {
+            index = (h1 + j * h2) % SIZE;
+
+            if (table[index] == -1)
+            {
+                table[index] = id;
+                break;
+            }
+
+            j++;
+        }
+
+        if (j == SIZE)
+        {
+            cout << "Could not insert ID " << id << endl;
+        }
+    }
+
+    cout << "\nFinal Hash Table:\n";
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        if (table[i] == -1)
+            cout << "Slot " << i << ": Empty\n";
+        else
+            cout << "Slot " << i << ": " << table[i] << "\n";
+    }
+
+    return 0;
+}
