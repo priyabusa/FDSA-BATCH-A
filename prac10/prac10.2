@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 10
+
+struct Node
+{
+    int code;
+    Node* next;
+};
+
+int main()
+{
+    Node* shelf[SIZE];
+
+    int n, code, index;
+
+
+    for (int i = 0; i < SIZE; i++)
+        shelf[i] = NULL;
+
+    cout << "Enter number of books: ";
+    cin >> n;
+
+    cout << "Enter book codes:\n";
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> code;
+
+        index = code % 10;
+
+        Node* newNode = new Node;
+        newNode->code = code;
+        newNode->next = NULL;
+
+        if (shelf[index] == NULL)
+        {
+            shelf[index] = newNode;
+        }
+        else
+        {
+            Node* temp = shelf[index];
+
+            while (temp->next != NULL)
+            {
+                temp = temp->next;
+            }
+
+            temp->next = newNode;
+        }
+    }
+
+    cout << "\nFinal Shelves:\n";
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        cout << "Shelf " << i << ": ";
+
+        Node* temp = shelf[i];
+
+        if (temp == NULL)
+        {
+            cout << "Empty";
+        }
+        else
+        {
+            while (temp != NULL)
+            {
+                cout << temp->code << " -> ";
+                temp = temp->next;
+            }
+
+            cout << "NULL";
+        }
+
+        cout << endl;
+    }
+
+    return 0;
+}
