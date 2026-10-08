@@ -1,99 +1,116 @@
 #include <iostream>
 using namespace std;
 
-#define MAX 20
-
-int graph[MAX][MAX];
-int visited[MAX];
-int n;
-
-
-void DFS(int node)
+class Graph
 {
-    visited[node] = 1;
-    cout << node << " ";
+    int n;
+    int adj[20][20];
 
-    for (int i = 0; i < n; i++)
+public:
+    Graph(int n)
     {
-        if (graph[node][i] == 1 && visited[i] == 0)
-        {
-            DFS(i);
-        }
-    }
-}
-
-
-void BFS(int start)
-{
-    int queue[MAX];
-    int front = 0, rear = 0;
-
-    for (int i = 0; i < n; i++)
-        visited[i] = 0;
-
-    queue[rear++] = start;
-    visited[start] = 1;
-
-    while (front < rear)
-    {
-        int node = queue[front++];
-        cout << node << " ";
+        this->n = n;
 
         for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                adj[i][j] = 0;
+    }
+
+    void addEdge(int u, int v)
+    {
+        adj[u][v] = 1;
+        adj[v][u] = 1;
+    }
+
+    void dfs(int start)
+    {
+        int stack[20];
+        bool visited[20] = {false};
+        int top = -1;
+
+        stack[++top] = start;
+
+        cout << "DFS: ";
+
+        while (top != -1)
         {
-            if (graph[node][i] == 1 && visited[i] == 0)
+            int node = stack[top--];
+
+            if (!visited[node])
             {
-                queue[rear++] = i;
-                visited[i] = 1;
+                visited[node] = true;
+                cout << node << " ";
+
+                for (int i = n - 1; i >= 0; i--)
+                {
+                    if (adj[node][i] == 1 && !visited[i])
+                        stack[++top] = i;
+                }
             }
         }
+
+        cout << endl;
     }
-}
+
+    void bfs(int start)
+    {
+        int queue[20];
+        bool visited[20] = {false};
+        int front = 0, rear = 0;
+
+        queue[rear++] = start;
+        visited[start] = true;
+
+        cout << "BFS: ";
+
+        while (front < rear)
+        {
+            int node = queue[front++];
+
+            cout << node << " ";
+
+            for (int i = 0; i < n; i++)
+            {
+                if (adj[node][i] == 1 && !visited[i])
+                {
+                    visited[i] = true;
+                    queue[rear++] = i;
+                }
+            }
+        }
+
+        cout << endl;
+    }
+};
 
 int main()
 {
-    int edges;
-    int u, v, start;
+    int n, e;
 
     cout << "Enter number of buildings: ";
     cin >> n;
 
-    for (int i = 0; i < n; i++)
-    {
-        visited[i] = 0;
-
-        for (int j = 0; j < n; j++)
-        {
-            graph[i][j] = 0;
-        }
-    }
+    Graph g(n);
 
     cout << "Enter number of roads: ";
-    cin >> edges;
+    cin >> e;
 
     cout << "Enter roads:\n";
 
-    for (int i = 0; i < edges; i++)
+    for (int i = 0; i < e; i++)
     {
+        int u, v;
         cin >> u >> v;
-
-        
-        graph[u][v] = 1;
-        graph[v][u] = 1;
+        g.addEdge(u, v);
     }
+
+    int start;
 
     cout << "Enter starting building: ";
     cin >> start;
 
-
-    cout << "\nDFS Traversal: ";
-    for (int i = 0; i < n; i++)
-        visited[i] = 0;
-
-    DFS(start);
-
-    cout << "\nBFS Traversal: ";
-    BFS(start);
+    g.dfs(start);
+    g.bfs(start);
 
     return 0;
 }
